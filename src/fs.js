@@ -69,7 +69,7 @@ class FileSystem {
     const {fsPath, clientPath} = this._resolvePath(path);
     return fsAsync.stat(fsPath)
     .tap((stat) => {
-      if (!stat.isDirectory()) throw new errors.FileSystemError('Not a valid directory');
+      if (!stat.isDirectory()) throw new errors.FileSystemError(`Can't change directory to "${path}"`);
     })
     .then(() => {
       this.cwd = clientPath;
