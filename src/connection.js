@@ -105,7 +105,7 @@ class FtpConnection extends EventEmitter {
 
           if (!letter.socket) letter.socket = options.socket ? options.socket : this.commandSocket;
           if (!options.useEmptyMessage) {
-            if (!letter.message) letter.message = DEFAULT_MESSAGE[options.code] || 'No information';
+            if (letter.message === undefined || letter.message === null) letter.message = DEFAULT_MESSAGE[options.code] || 'No information';
             if (!letter.encoding) letter.encoding = this.encoding;
           }
           return Promise.resolve(letter.message) // allow passing in a promise as a message
@@ -114,6 +114,7 @@ class FtpConnection extends EventEmitter {
               const seperator = !options.hasOwnProperty('eol') ?
                 letters.length - 1 === index ? ' ' : '-' :
                 options.eol ? ' ' : '-';
+              message = message === 0 ? '0' : message;
               message = !letter.raw ? _.compact([letter.code || options.code, message]).join(seperator) : message;
               letter.message = message;
             } else {
